@@ -1,7 +1,7 @@
 {
-  "name": "Abschlussarbeit_02",
+  "name": "RMSys",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.php",
   "license": "MIT",
   "dependencies": {
     "bootstrap": "^4.3.1",
