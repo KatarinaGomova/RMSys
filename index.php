@@ -6,6 +6,13 @@
 		$_SESSION['userId'] = null;
         session_destroy();
 	}
+
+	if (isset($_POST['saveSelectedProject'])) {
+		$projectVal = $_POST['selectValFromProject'];
+		$_SESSION['project'] = $projectVal;
+	}
+	$projectId = (isset($_SESSION['project'])) ? $_SESSION['project'] : 1;
+
 	require_once('dbconn.php');
 	require_once("dbfunctions.php");
 	require_once('loginConn.php');
@@ -14,7 +21,6 @@
 	$loggedIn = isset($_SESSION['username']);
 
 
-	$projectId = (isset($_SESSION['project'])) ? $_SESSION['project'] : 1;
 
 	// umgeändert auf Session, weiß aber nicht ob das gut ist
 	//$projectId = (isset($_GET['projectId']))?$_GET['projectId']:1;

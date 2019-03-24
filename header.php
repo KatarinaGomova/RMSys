@@ -88,11 +88,7 @@
                 </div>
             </form>
             <?php
-            // Problem: hier ist eine race condition da der js-part schneller ausgeführt wird als php
-                if (isset($_POST['saveSelectedProject'])) {
-                    $projectVal = $_POST['selectValFromProject'];
-                    $_SESSION['project'] = $projectVal;
-                }
+           
             ?>
         </div>
     </div>
