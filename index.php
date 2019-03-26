@@ -9,9 +9,11 @@
 
 	if (isset($_POST['saveSelectedProject'])) {
 		$projectVal = $_POST['selectValFromProject'];
-		$_SESSION['project'] = $projectVal;
+		$_GET['projectId'] = $projectVal;
 	}
-	$projectId = (isset($_SESSION['project'])) ? $_SESSION['project'] : 1;
+	//$projectId = (isset($_SESSION['project'])) ? $_SESSION['project'] : 1;
+// umgeändert auf Session, weiß aber nicht ob das gut ist
+	$projectId = (isset($_GET['projectId']))?$_GET['projectId']:1;
 
 	require_once('dbconn.php');
 	require_once("dbfunctions.php");
@@ -20,10 +22,6 @@
 	$site = (isset($_GET['site']))?$_GET['site']:NULL;
 	$loggedIn = isset($_SESSION['username']);
 
-
-
-	// umgeändert auf Session, weiß aber nicht ob das gut ist
-	//$projectId = (isset($_GET['projectId']))?$_GET['projectId']:1;
 ?>
 
 <!doctype html>

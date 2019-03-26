@@ -73,7 +73,7 @@
 
             echo "<div id='collapse{$result['requirementsId']}' class='collapse show' data-parent='#accordionExample'>";
                  
-                
+            
 
             $child_result = $conn->query("SELECT * 
                                             FROM requirements 
@@ -142,16 +142,24 @@
 
     }
 
-
-
+    //<form method='POST' action='delete.php?reqId={$dbData['requirementsId']}'>
+    //</form>
     function buttonClearReq($dbData) {
         global $conn;
 
-        echo "<form method='POST' action='delete.php?reqId={$dbData['requirementsId']}'>
-                <button type='submit' value='{$dbData['requirementsId']}' name='btnClearReq' class='btn btn-outline-dark'>
+
+        
+        $id = $dbData['requirementsId'];
+
+        echo "
+                <button type='submit' 
+                        value='{$dbData['requirementsId']}' 
+                        name='btnClearReq' 
+                        class='btn btn-outline-dark' 
+                        onclick='deletingReq('{$id}');'>
                     <i class='fa fa-trash-o'></i>   
                 </button>
-            </form>";
+            ";
 
             /*if (isset($_POST['btnClearReq'])) {
                 
@@ -224,7 +232,11 @@
                         <td><b>".$result['description']."</b></td>
                         <td>".$result['requirementsStatusId']."</td>
                         <td>
-                            <button type='button' class='btn btn-outline-dark' data-toggle='modal' data-target='#newRequirement'>
+                            <button type='button' 
+                                    class='btn btn-outline-dark' 
+                                    data-toggle='modal' 
+                                    data-target='#newRequirement'
+                                    onclick='setRequirement(\"".$result['requirementsId']."\");'>
                                 <i class='fa fa-plus'></i>
                             </button>
                         </td>
@@ -232,7 +244,7 @@
                             // TODO: Funktion mit Button fürs Löschen von Headlines erstellen
                 echo   "</td>
                     </tr>";
-                    hiddenRow($result);
+                    echo hiddenRow($result);
 
                 // 1.Requirements
                 $firstResReq = $conn->query("SELECT *

@@ -87,9 +87,6 @@
                     <button type="submit" id="saveSelectedProject" name="saveSelectedProject" class="btn btn-primary">Save</button>
                 </div>
             </form>
-            <?php
-           
-            ?>
         </div>
     </div>
 </div>
