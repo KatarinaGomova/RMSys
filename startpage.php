@@ -24,10 +24,22 @@
                 </div>
             </div>
             <div id="req" class="card-body">
-                
-                <?php
-                    getRequirements();  
-                ?>     
+                <table id='mytableofrows' class='table table-hover'>
+                    <thead>
+                        <tr>
+                            <th>ID</th>    
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            getRequirements();  
+                        ?>
+                    </tbody>    
+                </table>
             </div>
         </div>
     
@@ -53,34 +65,24 @@
                         <tr>
                             <td>Position</td>
                             <td>
-                                
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="pox-x-before" value="before">
-                                    <label class="form-check-label" for="pox-x-before">before</label>
+                                    <input class="form-check-input pos-y" type="radio" name="pos-y" id="pos-y-before" value="before">
+                                    <label class="form-check-label" for="pos-y-before">before</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="pox-x-after" value="after">
-                                    <label class="form-check-label" for="pox-x-after">after</label>
+                                    <input class="form-check-input pos-y" type="radio" name="pos-y" id="pos-y-after" value="after">
+                                    <label class="form-check-label" for="pos-y-after">after</label>
                                 </div>  
-                               
-                                <!-- brauche wahrscheinlich keinen Button mehr
-                                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#selectPosition">SELECT</button>
-                                
-                                <select id="inputState" class="form-control">
-                                    <option selected>Choose...</option>
-                                    <option>...</option>
-                                </select>
-                                -->
                             </td>
                         </tr>
                         <tr>
                             <td>Description</td>
-                            <td><textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea></td>
+                            <td><textarea name="newReqDes" class="form-control" id="newReqDes" rows="3"></textarea></td>
                         </tr>
                         <tr>
                             <td>Status</td>
                             <td>
-                                <select id="inputState" class="form-control">
+                                <select id="newReqStat" name="newReqStat" class="form-control">
                                     <?php 
                                         echo showStatus($conn);
                                     ?>
@@ -98,12 +100,14 @@
                         </tr>
                         <tr>
                             <td>Comment</td>
-                            <td><textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea></td>
+                            <td><textarea name="newReqComment" class="form-control" id="newReqComment" rows="3"></textarea></td>
                         </tr>
                     </table>
                 </form>
             </div>
             <div class="modal-footer">
+                <input type="input" value="null" name="projectId" id="projectId">
+                <input type="input" value="null" name="selectedReq" id="selectedReq">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" onclick="addingReq();">Save</button>
             </div>
@@ -129,11 +133,11 @@
                 ?>
                 <form action="" method="post">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="pox-x-before" value="before">
+                        <input class="form-check-input" type="radio" name="pos-x" id="pox-x-before" value="before">
                         <label class="form-check-label" for="pox-x-before">before</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="pox-x-after" value="after">
+                        <input class="form-check-input" type="radio" name="pos-x" id="pox-x-after" value="after">
                         <label class="form-check-label" for="pox-x-after">after</label>
                     </div>  
                 </form>

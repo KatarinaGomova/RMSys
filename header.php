@@ -1,8 +1,6 @@
 <?php
-
     if ($loggedIn) {
 ?>
-
 
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="index.php">RMSys</a>
@@ -69,7 +67,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="" method="POST">
+            <form action="" method="GET">
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="form-group col-10">

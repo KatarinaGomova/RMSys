@@ -73,7 +73,7 @@
 
             echo "<div id='collapse{$result['requirementsId']}' class='collapse show' data-parent='#accordionExample'>";
                  
-            
+                
 
             $child_result = $conn->query("SELECT * 
                                             FROM requirements 
@@ -142,58 +142,21 @@
 
     }
 
-    //<form method='POST' action='delete.php?reqId={$dbData['requirementsId']}'>
-    //</form>
+
     function buttonClearReq($dbData) {
         global $conn;
-
-
-        
-        $id = $dbData['requirementsId'];
 
         echo "
                 <button type='submit' 
                         value='{$dbData['requirementsId']}' 
                         name='btnClearReq' 
                         class='btn btn-outline-dark' 
-                        onclick='deletingReq('{$id}');'>
+                        onclick=deletingReq({$dbData['requirementsId']},{$dbData['numericalOrder']},{$dbData['parentId']});> 
                     <i class='fa fa-trash-o'></i>   
                 </button>
             ";
 
-            /*if (isset($_POST['btnClearReq'])) {
-                
-                echo "<script>alert(\"Löschen von ".$dbData['requirementsId']."\");</script>";
-
-                $order = $dbData['numericalOrder'];
-                
-                // Searching for next requirements in order
-                $anySiblings = $conn->query("SELECT * FROM requirements 
-                                            WHERE requirementsTypId = 2 
-                                            AND parentId = {$dbData['parentId']} 
-                                            AND numericalOrder > {$order}
-                                            ORDER BY numericalOrder;");
-                
-                // If next requirements found ...
-                if(!empty($anySiblings)) {
-                    
-                    // ... the order of 
-                    $numeration = $conn->query("UPDATE requirements SET numericalOrder = numericalOrder - 1 
-                                                WHERE requirementsTypId = 2 
-                                                AND parentId = {$dbData['parentId']} 
-                                                AND numericalOrder > {$order}
-                                                ORDER BY numericalOrder;");
-                   
-                }
-
-                $resClear = $conn->query("DELETE FROM requirements WHERE requirementsid = {$dbData['requirementsId']};");
-
-                // TODO: funktioniert noch nicht
-                //if($affRows = (mysqli_affected_rows($resClehar) > 0)) {
-                //    echo "<script>alert(\" Zeilen ".$affRows." gelöscht!\");</script>";
-                //}
-
-                }*/
+            
     }
 
 
@@ -201,20 +164,6 @@
         global $conn;
         global $projectId;
 
-
-        // TODO: Table-Header soll mitverschoben werden wenn man nach unten scrollt.
-        // -> gemacht, muss aber besser erkenntlich gemacht werden
-        echo "<table id='mytableofrows' class='table table-hover'>
-                <thead>
-                    <tr>
-                        <th>ID</th>    
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>";
 
         // 1.Headlines
         $results = $conn->query("SELECT * 
@@ -236,7 +185,7 @@
                                     class='btn btn-outline-dark' 
                                     data-toggle='modal' 
                                     data-target='#newRequirement'
-                                    onclick='setRequirement(\"".$result['requirementsId']."\");'>
+                                    onclick='setRequirement(\"".$result['requirementsId']."\",\"".$projectId."\");'>
                                 <i class='fa fa-plus'></i>
                             </button>
                         </td>
@@ -263,7 +212,12 @@
                             <td>".$firstReq['description']."</td>
                             <td></td>
                             <td>
-                                <button type='button' id='addReq' value='{$firstReq['requirementsId']}' class='btn btn-outline-dark' data-toggle='modal' data-target='#newRequirement'>
+                                <button type='button' 
+                                        value='{$firstReq['requirementsId']}' 
+                                        class='btn btn-outline-dark' 
+                                        data-toggle='modal' 
+                                        data-target='#newRequirement'
+                                        onclick='setRequirement(\"".$firstReq['requirementsId']."\",\"".$projectId."\");'>
                                     <i class='fa fa-plus'></i>
                                 </button>
                             </td>
@@ -288,7 +242,10 @@
                             <td>".$child['description']."</td>
                             <td></td>
                             <td>
-                                <button type='button' class='btn btn-outline-dark' data-toggle='modal' data-target='#newRequirement'>
+                                <button type='button' 
+                                        class='btn btn-outline-dark' 
+                                        data-toggle='modal' 
+                                        data-target='#newRequirement'>
                                     <i class='fa fa-plus'></i>
                                 </button>
                             </td>
@@ -311,7 +268,10 @@
                                 <td>".$secReq['description']."</td>
                                 <td></td>
                                 <td>
-                                    <button type='button' class='btn btn-outline-dark' data-toggle='modal' data-target='#newRequirement'>
+                                    <button type='button' 
+                                            class='btn btn-outline-dark' 
+                                            data-toggle='modal' 
+                                            data-target='#newRequirement'>
                                         <i class='fa fa-plus'></i>
                                     </button>
                                 </td>
@@ -336,7 +296,10 @@
                                 <td>".$child_child['description']."</td>
                                 <td></td>
                                 <td>
-                                    <button type='button' class='btn btn-outline-dark' data-toggle='modal' data-target='#newRequirement'>
+                                    <button type='button' 
+                                            class='btn btn-outline-dark' 
+                                            data-toggle='modal' 
+                                            data-target='#newRequirement'>
                                         <i class='fa fa-plus'></i>
                                     </button>
                                 </td>
@@ -359,7 +322,10 @@
                                     <td>".$thirdReq['description']."</td>
                                     <td></td>
                                     <td>
-                                        <button type='button' class='btn btn-outline-dark' data-toggle='modal' data-target='#newRequirement'>
+                                        <button type='button' 
+                                                class='btn btn-outline-dark' 
+                                                data-toggle='modal' 
+                                                data-target='#newRequirement'>
                                             <i class='fa fa-plus'></i>
                                         </button>
                                     </td>
@@ -375,9 +341,6 @@
         } else {
             echo "<tr><td colspan=3>No entries</td></tr>";
         }
-
-        echo "</tbody>
-            </table>";
 
     }
     

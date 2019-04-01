@@ -6,14 +6,14 @@
 		$_SESSION['userId'] = null;
         session_destroy();
 	}
-
-	if (isset($_POST['saveSelectedProject'])) {
-		$projectVal = $_POST['selectValFromProject'];
-		$_GET['projectId'] = $projectVal;
+	if (isset($_GET['saveSelectedProject'])) {
+		$projectId= $_GET['selectValFromProject'];
+	} else {
+		$projectId = 1;
 	}
-	//$projectId = (isset($_SESSION['project'])) ? $_SESSION['project'] : 1;
-// umgeändert auf Session, weiß aber nicht ob das gut ist
-	$projectId = (isset($_GET['projectId']))?$_GET['projectId']:1;
+	//$projectId = (isset($_GET['selectValFromProject'])) ? $_GET['selectValFromProject'] : 1;
+	// vorher 
+	//$projectId = (isset($_GET['projectId']))?$_GET['projectId']:1;
 
 	require_once('dbconn.php');
 	require_once("dbfunctions.php");
@@ -54,9 +54,9 @@
 		</div>
 
 
-		<script src="jsfunctions.js"></script>
 		<script src="node_modules/jquery/dist/jquery.js"></script>
 		<script src="node_modules/popper.js/dist/popper.js"></script>
 		<script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+		<script src="jsfunctions.js"></script>
 	</body>
 </html>
