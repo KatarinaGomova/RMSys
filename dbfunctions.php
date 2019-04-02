@@ -53,6 +53,7 @@
     }
 
 
+    // don't know if needed 
     function headlineAccordion() {
         global $conn;
         global $projectId;
@@ -135,13 +136,7 @@
 
     }
 
-    
-    function addNewReq() {
-        global $conn;
-
-
-    }
-
+   
 
     function buttonClearReq($dbData) {
         global $conn;
@@ -193,7 +188,7 @@
                             // TODO: Funktion mit Button fürs Löschen von Headlines erstellen
                 echo   "</td>
                     </tr>";
-                    echo hiddenRow($result);
+                    hiddenRow($result);
 
                 // 1.Requirements
                 $firstResReq = $conn->query("SELECT *
