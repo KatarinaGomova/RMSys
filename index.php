@@ -52,6 +52,10 @@
 				$site = str_replace($invalide, ' ', $site);
 				if (!file_exists($site.".php")) $site = "startpage";
 				include($site.".php");
+
+
+				include "src/modals/editRequirement.php";
+				include "src/modals/newRequirement.php";
 			?>
 
 

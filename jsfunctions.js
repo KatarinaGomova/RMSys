@@ -25,12 +25,12 @@ function setAllReq(id, projectId, user, desc, progress, status, comment) {
 }
 
 function editingReq() {
-    var reqId = $('#selectedReq').val();
-    var position = $('.pos-y:checked').val();
-    var description = $('#newReqDes').val();
-    var status = $('#newReqStat').val();
-    // progress
-    var comment = $('#newReqComment').val();
+    var reqId = $('#editselectedReq').val();
+    //var position = 
+    var description = $('#editReqDes').val();
+    var status = $('#editReqStat').val();
+    var progress = $('#editProgessSlider').val();
+    var comment = $('#editReqComment').val();
     var projectId = $('#projectId').val();
 }
 
@@ -41,18 +41,19 @@ function addingReq() {
         var position = $('.pos-y:checked').val();
         var description = $('#newReqDes').val();
         var status = $('#newReqStat').val();
-        // progress
+        var progress = $('#newProgressSlider').val();
         var comment = $('#newReqComment').val();
         var projectId = $('#projectId').val();
         
         $.ajax({
             type: "POST",
-            url: "addNewReq.php",
+            url: "src/ajaxToPHP/addNewReq.php",
             data: {
                 id : reqId,
                 pos : position,
                 desc : description,
-                stat : status,                           
+                stat : status,
+                progress : progress,                           
                 comment : comment,
                 projectId : projectId
             },
@@ -81,7 +82,7 @@ function deletingReq(reqId, numericalOrder, parentId) {
 
     $.ajax({
         type: "POST",
-        url: "delete.php",
+        url: "src/ajaxToPHP/deleteReq.php",
         data: {
             reqId : id,
             order : order,

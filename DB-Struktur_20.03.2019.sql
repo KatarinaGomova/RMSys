@@ -1,3 +1,4 @@
+
 CREATE DATABASE `rmsys`;
 USE `rmsys`;
 
@@ -8,16 +9,6 @@ CREATE TABLE `attacheddata` (
   `data` blob,
   PRIMARY KEY (`dataId`)
 );
-
-
-CREATE TABLE `progress` (
-  `progressId` int(11) NOT NULL AUTO_INCREMENT,
-  `progress` int(11) NOT NULL,
-  PRIMARY KEY (`progressId`)
-);
-
-
-INSERT INTO `progress` VALUES (1,0),(2,25),(3,50),(4,75),(5,100);
 
 
 CREATE TABLE `project` (
@@ -94,35 +85,37 @@ CREATE TABLE `requirements` (
   `comments` text,
   `creationDateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `requirementsStatusId` int(11) DEFAULT NULL,
-  `progressId` int(11) DEFAULT NULL,
+  `progress` int(11) DEFAULT NULL,
   `userId` int(11) DEFAULT NULL,
   `projectId` int(11) DEFAULT NULL,
   `requirementsTypId` int(11) DEFAULT NULL,
   PRIMARY KEY (`requirementsId`),
   KEY `requirementsStatusId` (`requirementsStatusId`),
-  KEY `progressId` (`progressId`),
   KEY `userId` (`userId`),
   KEY `projectId` (`projectId`),
   KEY `requirementsTypId` (`requirementsTypId`),
   CONSTRAINT `requirements_ibfk_1` FOREIGN KEY (`requirementsStatusId`) REFERENCES `requirementsstatus` (`requirementsstatusid`),
-  CONSTRAINT `requirements_ibfk_2` FOREIGN KEY (`progressId`) REFERENCES `progress` (`progressid`),
   CONSTRAINT `requirements_ibfk_3` FOREIGN KEY (`userId`) REFERENCES `usermanagement` (`userid`),
   CONSTRAINT `requirements_ibfk_4` FOREIGN KEY (`projectId`) REFERENCES `project` (`projectid`),
   CONSTRAINT `requirements_ibfk_5` FOREIGN KEY (`requirementsTypId`) REFERENCES `requirementstyp` (`requirementstypid`)
 );
 
 
-INSERT INTO `requirements` VALUES (1,1,0,'GUI',NULL,'2019-02-18 08:42:04',1,1,2,1,1),
-									(2,2,1,'allgemein',NULL,'2019-02-18 08:42:04',4,1,2,1,1),
-                                    (3,1,1,'Länderspezifika',NULL,'2019-02-18 08:42:04',3,1,2,1,1),
-                                    (4,2,0,'Benutzerverwaltung',NULL,'2019-02-18 08:42:04',3,1,2,1,1),
-                                    (5,2,2,'Anzeige Werte',NULL,'2019-02-18 08:42:04',4,1,3,1,1),
-                                    (6,3,0,'Farben',NULL,'2019-02-18 08:42:04',1,1,2,1,1),
-                                    (7,1,2,'hier',NULL,'2019-02-18 10:31:31',1,1,2,1,1),
-                                    (8,1,2,'Hier ist eine Anforderung die genau richtig angezeigt werden muss.',NULL,'2019-02-25 07:13:16',4,1,3,1,2),
-                                    (9,2,2,'Noch eine Anforderung, diese muss auch richtig angezeigt werden. Dies ist ganz ganz ganz ganz ganz ganz ganz ganz ganz ganz ganz ganz ganz wichtig!!!',NULL,'2019-02-25 07:42:31',1,1,3,1,2),
-                                    (10,1,1,'Eine zweite Anforderung.',NULL,'2019-03-05 08:20:52',1,1,2,1,2),(11,3,1,'Hier ist die Dritte.',NULL,'2019-03-05 08:20:52',4,1,2,1,2),(12,2,1,'Eine tolle Anforderung',NULL,'2019-03-05 12:15:36',3,1,2,1,2),
-                                    (13,1,4,'Für Benutzerverwaltung gibt es auch eine Anforderung.',NULL,'2019-03-11 07:29:26',4,1,3,1,2),(14,1,4,'Unterteilung',NULL,'2019-03-11 11:05:04',1,1,3,1,1),
-                                    (15,4,1,'Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung.',NULL,'2019-03-11 11:08:06',3,1,2,1,2),
-                                    (16,1,6,'Komponenten',NULL,'2019-03-12 09:01:06',1,1,2,1,1),(17,4,0,'Namen',NULL,'2019-03-12 09:05:47',4,1,3,1,1),
-                                    (18,1,0,'Test für Headline',NULL,'2019-03-14 07:52:48',3,1,2,6,1);
+INSERT INTO `requirements` VALUES (1,1,0,'GUI',NULL,'2019-02-18 08:42:04',1,25,2,1,1),
+									(2,2,1,'allgemein',NULL,'2019-02-18 08:42:04',4,50,2,1,1),
+                                    (3,1,1,'Länderspezifika',NULL,'2019-02-18 08:42:04',3,50,2,1,1),
+                                    (4,2,0,'Benutzerverwaltung',NULL,'2019-02-18 08:42:04',3,75,2,1,1),
+                                    (5,2,2,'Anzeige Werte',NULL,'2019-02-18 08:42:04',4,0,3,1,1),
+                                    (6,3,0,'Farben',NULL,'2019-02-18 08:42:04',1,0,2,1,1),
+                                    (7,1,2,'hier',NULL,'2019-02-18 10:31:31',1,50,2,1,1),
+                                    (8,1,2,'Hier ist eine Anforderung die genau richtig angezeigt werden muss.',NULL,'2019-02-25 07:13:16',4,25,3,1,2),
+                                    (9,2,2,'Noch eine Anforderung, diese muss auch richtig angezeigt werden. Dies ist ganz ganz ganz ganz ganz ganz ganz ganz ganz ganz ganz ganz ganz wichtig!!!',NULL,'2019-02-25 07:42:31',1,25,3,1,2),
+                                    (10,1,1,'Eine zweite Anforderung.',NULL,'2019-03-05 08:20:52',1,50,2,1,2),
+                                    (11,3,1,'Hier ist die Dritte.',NULL,'2019-03-05 08:20:52',4,75,2,1,2),
+                                    (12,2,1,'Eine tolle Anforderung',NULL,'2019-03-05 12:15:36',3,100,2,1,2),
+                                    (13,1,4,'Für Benutzerverwaltung gibt es auch eine Anforderung.',NULL,'2019-03-11 07:29:26',4,100,3,1,2),
+                                    (14,1,4,'Unterteilung',NULL,'2019-03-11 11:05:04',1,50,3,1,1),
+                                    (15,4,1,'Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung.',NULL,'2019-03-11 11:08:06',3,25,2,1,2),
+                                    (16,1,6,'Komponenten',NULL,'2019-03-12 09:01:06',1,0,2,1,1),
+                                    (17,4,0,'Namen',NULL,'2019-03-12 09:05:47',4,75,3,1,1),
+                                    (18,1,0,'Test für Headline',NULL,'2019-03-14 07:52:48',3,0,2,6,1);
