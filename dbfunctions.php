@@ -113,36 +113,74 @@
     
 
     // funktioniert leider noch nicht
-    function hiddenRow($dbDaten) {
+    function hiddenRow($dbDaten, $prefix) {
         global $projectId;
+    
 
     echo "<tr>
-            <td colspan='5' class='hiddenRow noHover'>
-                <div id='{$projectId}.{$dbDaten['requirementsId']}' class='collapse'>";
+            <td colspan='6' class='hiddenRow noHover'>
+                <div id='{$prefix}{$dbDaten['requirementsId']}' class='collapse'>";
                     // TODO: Die Progress-Bar muss noch an die DB verknüpft werden
                     echo "
-                        <div class='progress'>
-                            <div class='progress-bar' role='progressbar' style='width: 25%;' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>25%</div>
+                        
+
+
+
+                        <div class='card text-white bg-secondary border-dark'>
+                            <div class='card-body'>
+                                <div class='progress'>
+                                    
+                                    <div class='progress-bar' role='progressbar' style='width: 25%;' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>25%</div>
+                                </div>
+                                <div>
+                                    <label for='disabledTextarea'>Example textarea</label>
+                                    <textarea disabled class='form-control' id='disabledTextarea' rows='2'>{$dbDaten['comments']}</textarea>
+                                </div>
+
+
+                            
+                            
+                            </div>
                         </div>
-                        <div class='form-group'>
-                            <label for='exampleFormControlTextarea1'>Example textarea</label>
-                            <textarea class='form-control' id='exampleFormControlTextarea1' rows='2'>{$dbDaten['comments']}</textarea>
-                        </div>
+
+
 
                 </div>
             </td>
         </tr>";
-        
+        return;
 
     }
 
+    function buttonEditReq($dbData) {
+        global $conn;
+
+        echo "  <button type='button' 
+                        class='btn btn-outline-dark text-left' 
+                        data-toggle='modal' 
+                        data-target='#editRequirement'
+                        onclick=''>
+                    <i class='fa fa-pencil'></i>
+                </button>";
+    }
    
+    function buttonNewReq($dbData) {
+        global $conn;
+        global $projectId;
+
+        echo "  <button type='button' 
+                        class='btn btn-outline-dark' 
+                        data-toggle='modal' 
+                        data-target='#newRequirement'
+                        onclick='setRequirement(\"".$dbData['requirementsId']."\",\"".$projectId."\");'>
+                    <i class='fa fa-plus'></i>
+                </button>";
+    }
 
     function buttonClearReq($dbData) {
         global $conn;
 
-        echo "
-                <button type='submit' 
+        echo "  <button type='submit' 
                         value='{$dbData['requirementsId']}' 
                         name='btnClearReq' 
                         class='btn btn-outline-dark' 
@@ -150,15 +188,12 @@
                     <i class='fa fa-trash-o'></i>   
                 </button>
             ";
-
-            
     }
 
-
+// TODO: Funktion mit Button fürs Löschen von Headlines erstellen
     function getRequirements() {
         global $conn;
         global $projectId;
-
 
         // 1.Headlines
         $results = $conn->query("SELECT * 
@@ -171,28 +206,23 @@
         if ($results->num_rows) {
             
             foreach ($results as $result) {
-                echo "<tr data-toggle='collapse' data-target='#{$projectId}.{$result['requirementsId']}'>
+                echo "<tr data-toggle='collapse' data-target='#{$_SESSION['prefix']}{$result['requirementsId']}'>
                         <td>".$result['numericalOrder']."</td>
                         <td><b>".$result['description']."</b></td>
                         <td>".$result['requirementsStatusId']."</td>
-                        <td>
-                            <button type='button' 
-                                    class='btn btn-outline-dark' 
-                                    data-toggle='modal' 
-                                    data-target='#newRequirement'
-                                    onclick='setRequirement(\"".$result['requirementsId']."\",\"".$projectId."\");'>
-                                <i class='fa fa-plus'></i>
-                            </button>
-                        </td>
+                        <td></td>
                         <td>";
-                            // TODO: Funktion mit Button fürs Löschen von Headlines erstellen
-                echo   "</td>
+                            buttonNewReq($result);
+                echo    "</td>
+                        <td></td>
                     </tr>";
-                    hiddenRow($result);
+                    hiddenRow($result, $_SESSION['prefix']);
 
                 // 1.Requirements
                 $firstResReq = $conn->query("SELECT *
                                                 FROM requirements
+                                                LEFT JOIN requirementsstatus AS stat 
+                                                ON (requirements.requirementsStatusId = stat.requirementsStatusId)
                                                 WHERE projectId = {$projectId}
                                                 AND parentId = {$result['requirementsId']}
                                                 AND requirementsTypId = 2
@@ -200,27 +230,21 @@
 
                 foreach ($firstResReq as $firstReq) {
                     
-                    echo "<tr data-toggle='collapse' data-target='#{$projectId}.{$firstReq['requirementsId']}'>
-                            <td>
-                                
-                            </td>
+                    echo "<tr data-toggle='collapse' data-target='#{$_SESSION['prefix']}{$firstReq['requirementsId']}'>
+                            <td>{$_SESSION['prefix']}{$firstReq['requirementsId']}</td>
                             <td>".$firstReq['description']."</td>
-                            <td></td>
-                            <td>
-                                <button type='button' 
-                                        value='{$firstReq['requirementsId']}' 
-                                        class='btn btn-outline-dark' 
-                                        data-toggle='modal' 
-                                        data-target='#newRequirement'
-                                        onclick='setRequirement(\"".$firstReq['requirementsId']."\",\"".$projectId."\");'>
-                                    <i class='fa fa-plus'></i>
-                                </button>
-                            </td>
+                            <td>{$firstReq['requirementsStatusName']}</td>
+                            <td>";
+                                buttonEditReq($firstReq);
+                    echo    "</td>
+                            <td>";
+                                buttonNewReq($firstReq);
+                    echo    "</td>
                             <td>";
                                 buttonClearReq($firstReq);     
                     echo   "</td>
                         </tr>";
-                        hiddenRow($firstReq);
+                        hiddenRow($firstReq, $_SESSION['prefix']);
                 }
 
                 // 2.Headlines
@@ -236,17 +260,11 @@
                             <td>".$result['numericalOrder'].".".$child['numericalOrder']."</td>
                             <td>".$child['description']."</td>
                             <td></td>
-                            <td>
-                                <button type='button' 
-                                        class='btn btn-outline-dark' 
-                                        data-toggle='modal' 
-                                        data-target='#newRequirement'>
-                                    <i class='fa fa-plus'></i>
-                                </button>
-                            </td>
-                            <td>
-                                
-                            </td>
+                            <td></td>
+                            <td>";
+                                buttonNewReq($child);
+                    echo " </td>
+                            <td></td>
                         </tr>";
                     
                     //2.Requirements
@@ -262,14 +280,10 @@
                                 </td>
                                 <td>".$secReq['description']."</td>
                                 <td></td>
-                                <td>
-                                    <button type='button' 
-                                            class='btn btn-outline-dark' 
-                                            data-toggle='modal' 
-                                            data-target='#newRequirement'>
-                                        <i class='fa fa-plus'></i>
-                                    </button>
-                                </td>
+                                <td></td>
+                                <td>";
+                                    buttonNewReq($secReq);
+                        echo   "</td>
                                 <td>";
                                     buttonClearReq($secReq);
                         echo   "</td>
@@ -290,17 +304,11 @@
                                 <td>".$result['numericalOrder'].".".$child['numericalOrder'].".".$child_child['numericalOrder']."</td>
                                 <td>".$child_child['description']."</td>
                                 <td></td>
-                                <td>
-                                    <button type='button' 
-                                            class='btn btn-outline-dark' 
-                                            data-toggle='modal' 
-                                            data-target='#newRequirement'>
-                                        <i class='fa fa-plus'></i>
-                                    </button>
-                                </td>
-                                <td>
-                                   
-                                </td>
+                                <td></td>
+                                <td>";
+                                    buttonNewReq($child_child);
+                        echo   "</td>
+                                <td></td>
                             </tr>";
                     
                         // 3.Requirements
@@ -316,14 +324,10 @@
                                     </td>
                                     <td>".$thirdReq['description']."</td>
                                     <td></td>
-                                    <td>
-                                        <button type='button' 
-                                                class='btn btn-outline-dark' 
-                                                data-toggle='modal' 
-                                                data-target='#newRequirement'>
-                                            <i class='fa fa-plus'></i>
-                                        </button>
-                                    </td>
+                                    <td></td>
+                                    <td>";
+                                        buttonNewReq($thirdReq);
+                            echo   "</td>
                                     <td>";
                                         buttonClearReq($thirdReq);
                             echo   "</td>
@@ -334,7 +338,7 @@
             }
 
         } else {
-            echo "<tr><td colspan=3>No entries</td></tr>";
+            echo "<tr><td colspan='6'>No entries</td></tr>";
         }
 
     }
@@ -344,7 +348,7 @@
   
         $output = '';
 
-        $sql = $conn->query("SELECT projectId, projectName, prefix FROM project ORDER BY projectName");
+        $sql = $conn->query("SELECT projectId, projectName, prefix FROM project ORDER BY projectName;");
 
         while ($row = mysqli_fetch_array($sql)) {
             $output .= '<option value="'.$row["projectId"].'">'.$row["prefix"]." - ".$row["projectName"].'</option>';
@@ -392,4 +396,14 @@
 
         return $output;
     }
+
+    function prefixVal($projectId) {
+        global $conn;
+
+        $sql = $conn->query("SELECT prefix FROM project WHERE projectId = {$projectId};");
+        while ($row = mysqli_fetch_array($sql)) {
+            $_SESSION['prefix'] = $row['prefix'];
+        }
+    }
 ?>
+

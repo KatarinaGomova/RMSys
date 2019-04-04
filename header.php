@@ -13,6 +13,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="index.php">Home</a>
                 </li>
+                <!-- Dropdown for Projects -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
                     Project
@@ -28,10 +29,11 @@
                         <a class="dropdown-item" href="#">Project Management</a>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
             </ul>
+            <!-- Damit man auch das Projekt sieht -->
+            <!-- <span class="navbar-text">
+                Project: <b id="project"></b>
+            </span> -->
             <span class="navbar-text">
                 <?php
                     if ($_SESSION['username'] == 'admin') {
@@ -82,7 +84,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" id="saveSelectedProject" name="saveSelectedProject" class="btn btn-primary">Save</button>
+                    <button type="submit" 
+                            id="saveSelectedProject" 
+                            name="saveSelectedProject" 
+                            class="btn btn-primary"
+                            onclick="projectVal();">Save
+                    </button>
                 </div>
             </form>
         </div>

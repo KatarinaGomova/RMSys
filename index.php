@@ -19,6 +19,10 @@
 	require_once("dbfunctions.php");
 	require_once('loginConn.php');
 	
+	// prefix as session
+	prefixVal($projectId);
+
+
 	$site = (isset($_GET['site']))?$_GET['site']:NULL;
 	$loggedIn = isset($_SESSION['username']);
 

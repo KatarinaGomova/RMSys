@@ -1,11 +1,11 @@
 .container {
     margin-top: 5px;
 }
-
+/*
 .table {
     color: white;
 }
-
+*/
 .plus {
     padding: 0.1rem 0.5rem;
 }
@@ -98,4 +98,8 @@ table#mytableofrows thead {
     top: 3.5em;
     background-color: #6c757d;
     position: sticky;
+}
+
+#mytableofrows {
+    background-color: #6c757d;
 }

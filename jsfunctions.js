@@ -9,9 +9,29 @@
         });
 }*/
 
+function projectVal() {
+    var name = $('#selectProject>option:selected').html();
+    // funktioniert nicht 
+    //document.getElementById('project').innerhtml() = name;
+}
+
 function setRequirement(id, projectId) {
     document.getElementById('selectedReq').value = id;
     document.getElementById('projectId').value = projectId;
+}
+
+function setAllReq(id, projectId, user, desc, progress, status, comment) {
+
+}
+
+function editingReq() {
+    var reqId = $('#selectedReq').val();
+    var position = $('.pos-y:checked').val();
+    var description = $('#newReqDes').val();
+    var status = $('#newReqStat').val();
+    // progress
+    var comment = $('#newReqComment').val();
+    var projectId = $('#projectId').val();
 }
 
 
@@ -68,7 +88,7 @@ function deletingReq(reqId, numericalOrder, parentId) {
             parentId : parent
         },
         success: function() {
-            alert("Erfolgreich gelöscht!");
+            //alert("Erfolgreich gelöscht!");
             window.location.assign("startpage.php");
             window.location.reload(true);
         },

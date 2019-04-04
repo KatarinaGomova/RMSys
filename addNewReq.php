@@ -5,7 +5,7 @@
 
     $id = $_POST['id'];
     $desc = $_POST['desc'];
-    $pos = (isset($_POST['pos'])) ? $_POST['pos'] : 'after';
+    $pos = $_POST['pos'];
     $status = $_POST['stat'];
     // TODO: Progressbar
     $comment = $_POST['comment'];

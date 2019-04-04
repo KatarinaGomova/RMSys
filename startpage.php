@@ -16,20 +16,23 @@
                     <div class="col">
                         <span class="align-middle">Requirements</span>    
                     </div>
+                    <!--
                     <div class="col text-right">
                         <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#newRequirement">
                             <i class="fa fa-plus"></i>
                         </button>
                     </div>
+                    -->
                 </div>
             </div>
             <div id="req" class="card-body">
-                <table id='mytableofrows' class='table table-hover'>
+                <table id='mytableofrows' class='table table-hover table-dark'>
                     <thead>
                         <tr>
                             <th>ID</th>    
                             <th>Description</th>
                             <th>Status</th>
+                            <th></th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -70,7 +73,7 @@
                                     <label class="form-check-label" for="pos-y-before">before</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input pos-y" type="radio" name="pos-y" id="pos-y-after" value="after">
+                                    <input class="form-check-input pos-y" type="radio" name="pos-y" id="pos-y-after" value="after" checked="checked">
                                     <label class="form-check-label" for="pos-y-after">after</label>
                                 </div>  
                             </td>
@@ -114,6 +117,70 @@
         </div>
     </div>
 </div>
+
+
+<!-- Modal for editing requirements -->
+<div class="modal fade" id="editRequirement" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Requirement</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST">
+                    <table class="table table-dark">
+                        <tr>
+                            <td>Position</td>
+                            <td>
+                                 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td><textarea name="editReqDes" class="form-control" id="editReqDes" rows="3"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>
+                                <select id="editReqStat" name="editReqStat" class="form-control" value="<?php //show status from db  ?>">
+                                    <?php 
+                                        echo showStatus($conn);
+                                    ?>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Progress</td>
+                            <td><!-- TODO: verschiebbare Progress-Bar -->
+                                <div class="slidecontainer">
+                                    <input type="range" min="0" max="100" value="0" class="slider" id="progressSlider">
+                                    <p>Value: <span id="sliderValue"></span></p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Comment</td>
+                            <td><textarea name="editReqComment" class="form-control" id="editReqComment" rows="3"></textarea></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="input" value="null" name="editSelectedReq" id="editSelectedReq">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="editingReq();">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
 
 
 <!-- Modal for selecting position -->
