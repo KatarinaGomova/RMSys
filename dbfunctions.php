@@ -128,12 +128,14 @@
 
                         <div class='card text-white bg-secondary border-dark'>
                             <div class='card-body'>
-                                <div class='progress'>
-                                    
-                                    <div class='progress-bar' role='progressbar' style='width: 25%;' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>25%</div>
+                                <div>
+                                    <label for=''>Progress</label>
+                                    <div class='progress'>
+                                        <div class='progress-bar' role='progressbar' style='width: 25%;' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>25%</div>
+                                    </div>
                                 </div>
                                 <div>
-                                    <label for='disabledTextarea'>Example textarea</label>
+                                    <label for='disabledTextarea'>Comment</label>
                                     <textarea disabled class='form-control' id='disabledTextarea' rows='2'>{$dbDaten['comments']}</textarea>
                                 </div>
 
