@@ -158,7 +158,7 @@
         global $conn;
 
         echo "  <button type='button' 
-                        class='btn btn-outline-dark text-left' 
+                        class='btn btn-outline-dark small' 
                         data-toggle='modal' 
                         data-target='#editRequirement'
                         onclick=''>
@@ -171,7 +171,7 @@
         global $projectId;
 
         echo "  <button type='button' 
-                        class='btn btn-outline-dark' 
+                        class='btn btn-outline-dark small' 
                         data-toggle='modal' 
                         data-target='#newRequirement'
                         onclick='setRequirement(\"".$dbData['requirementsId']."\",\"".$projectId."\");'>
@@ -185,8 +185,8 @@
         echo "  <button type='submit' 
                         value='{$dbData['requirementsId']}' 
                         name='btnClearReq' 
-                        class='btn btn-outline-dark' 
-                        onclick=deletingReq({$dbData['requirementsId']},{$dbData['numericalOrder']},{$dbData['parentId']});> 
+                        class='btn btn-outline-dark small' 
+                        onclick='deletingReq({$dbData['requirementsId']},{$dbData['numericalOrder']},{$dbData['parentId']})';> 
                     <i class='fa fa-trash-o'></i>   
                 </button>
             ";
@@ -407,5 +407,75 @@
             $_SESSION['prefix'] = $row['prefix'];
         }
     }
+
+    function buttonRestore() {
+        global $conn;
+
+        // TODO: funktionalität der restore funktion schreiben
+        echo "  <button type='submit' 
+                        value='' 
+                        name='btnClearReq' 
+                        class='btn btn-outline-dark small' 
+                        onclick='';> 
+                    <i class='fa fa-share'></i>   
+                </button>
+            ";
+
+    }
+
+
+
+    function showDeletedReq() {
+        global $conn, $projectId;
+
+        $sql = $conn->query("SELECT p.prefix, r.requirementsId, r.description, u.firstName, u.lastName, r.creationDateTime
+                            FROM requirements as r
+                            LEFT JOIN usermanagement as u on (r.userId = u.userId)
+                            LEFT JOIN project as p on (r.projectId = p.projectId)
+                            WHERE r.projectId = {$projectId}
+                            AND r.requirementsTypId = 2
+                            AND r.deleted = 1
+                            ORDER BY r.creationDateTime DESC;");
+        
+        while ($row = mysqli_fetch_array($sql)) {
+            echo "<tr>
+                        <th>{$row['prefix']}{$row['requirementsId']}</th>
+                        <td>{$row['description']}</td>
+                        <td>{$row['firstName']} {$row['lastName']}</td>
+                        <td>{$row['creationDateTime']}</td>
+                        <td>";
+                        buttonRestore($row['requirementsId']);
+            echo       "</td>
+                    </tr>";
+        }
+
+    }
+
+
+    function showAllHistory() {
+        global $conn, $projectId;
+
+        $sql = $conn->query("SELECT p.prefix, h.requirementsId, h.operation, h.column, h.newValue, h.oldValue, u.firstName, u.lastName, h.operationDateTime
+                            FROM history as h
+                            LEFT JOIN project as p on (h.projectId = p.projectId)
+                            LEFT JOIN usermanagement as u on (h.userId = u.userId)
+                            WHERE h.projectId = {$projectId}
+                            ORDER BY h.operationDateTime DESC;");
+
+        while ($row = mysqli_fetch_array($sql)) {
+        echo "<tr>
+            <th>{$row['prefix']}{$row['requirementsId']}</th>
+            <td>{$row['operation']}</td>
+            <td>{$row['column']}</td>
+            <td>{$row['newValue']}</td>
+            <td>{$row['oldValue']}</td>
+            <td>{$row['firstName']} {$row['lastName']}</td>
+            <td>{$row['operationDateTime']}</td>
+        </tr>";
+        }
+
+    }
+
+
 ?>
 

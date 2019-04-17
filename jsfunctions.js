@@ -99,3 +99,7 @@ function deletingReq(reqId, numericalOrder, parentId) {
     });
         
 }
+
+function restoreReq() {
+    // TODO: funktionalität der restoreReq schreiben
+}

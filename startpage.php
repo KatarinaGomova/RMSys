@@ -16,18 +16,16 @@
                     <div class="col">
                         <span class="align-middle">Requirements</span>    
                     </div>
-                    <!--
                     <div class="col text-right">
-                        <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#newRequirement">
-                            <i class="fa fa-plus"></i>
+                        <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#showDeletedReq">
+                            Deleted
                         </button>
                     </div>
-                    -->
                 </div>
             </div>
             <div id="req" class="card-body">
-                <table id='mytableofrows' class='table table-hover table-dark'>
-                    <thead>
+                <table id="mytableofrows" class="table table-hover">
+                    <thead class="thead-dark"> 
                         <tr>
                             <th>ID</th>    
                             <th>Description</th>

@@ -56,6 +56,8 @@
 
 				include "src/modals/editRequirement.php";
 				include "src/modals/newRequirement.php";
+				include "src/modals/showDeletedReq.php";
+				include "src/modals/showHistory.php";
 			?>
 
 
