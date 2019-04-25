@@ -26,7 +26,7 @@
         
     }
 
-    $conn->query("DELETE FROM requirements WHERE requirementsid = {$reqId};");
+    $conn->query("UPDATE requirements SET deleted = 1 WHERE requirementsid = {$reqId};");
 
     // TODO: funktioniert noch nicht
     //if($affRows = (mysqli_affected_rows($resClehar) > 0)) {

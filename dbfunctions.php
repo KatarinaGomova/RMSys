@@ -138,6 +138,17 @@
                                     <label for='disabledTextarea'>Comment</label>
                                     <textarea disabled class='form-control' id='disabledTextarea' rows='2'>{$dbDaten['comments']}</textarea>
                                 </div>
+                                <div style='height=10px;'>
+                                    <label for=''>History</label>
+                                    <table class='table'>
+                                    <thead>
+                                    </thead>
+                                    <tbody>";
+                                showAllHistory();
+
+                          echo "    </tbody>
+                                    </table>
+                                </div>
 
 
                             
@@ -203,6 +214,7 @@
                                 WHERE projectId = {$projectId}
                                 AND parentId = 0 
                                 AND requirementsTypId = 1
+                                AND deleted = 0
                                 ORDER BY numericalOrder;");
         
         if ($results->num_rows) {
@@ -228,6 +240,7 @@
                                                 WHERE projectId = {$projectId}
                                                 AND parentId = {$result['requirementsId']}
                                                 AND requirementsTypId = 2
+                                                AND deleted = 0
                                                 ORDER BY numericalOrder;");
 
                 foreach ($firstResReq as $firstReq) {
@@ -255,6 +268,7 @@
                                                 WHERE projectId = {$projectId}
                                                 AND parentId = {$result['requirementsId']} 
                                                 AND requirementsTypId = 1
+                                                AND deleted = 0
                                                 ORDER BY numericalOrder;");
                 
                 foreach ($child_result as $child) {
@@ -275,6 +289,7 @@
                                                 WHERE projectId = {$projectId}
                                                 AND parentId = {$child['requirementsId']}
                                                 AND requirementsTypId = 2
+                                                AND deleted = 0
                                                 ORDER BY numericalOrder;");
                     foreach ($secResReq as  $secReq) {
                         echo "<tr>
@@ -299,6 +314,7 @@
                                                         WHERE projectId = {$projectId}
                                                         AND parentId = {$child['requirementsId']}
                                                         AND requirementsTypId = 1
+                                                        AND deleted = 0
                                                         ORDER BY numericalOrder;");
                     
                     foreach ($child_child_result as $child_child) {
@@ -319,6 +335,7 @@
                                                         WHERE projectId = {$projectId}
                                                         AND parentId = {$child_child['requirementsId']}
                                                         AND requirementsTypId = 2
+                                                        AND deleted = 0
                                                         ORDER BY numericalOrder;");
                         foreach ($thirdResReq as $thirdReq) {
                             echo "<tr>
