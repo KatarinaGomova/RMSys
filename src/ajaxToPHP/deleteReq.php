@@ -1,6 +1,8 @@
 <?php
     require_once('../../dbconn.php');
 
+    $projectId = $_POST['projectId'];
+    $userId = $_POST['userId'];
     $reqId = $_POST['reqId'];
     $order = $_POST['order'];
     $parentId = $_POST['parentId'];
@@ -26,12 +28,9 @@
         
     }
 
-    $conn->query("UPDATE requirements SET deleted = 1 WHERE requirementsid = {$reqId};");
+    $conn->query("UPDATE requirements SET deleted = 1, creationDateTime = Current_timestamp WHERE requirementsid = {$reqId};");
 
-    // TODO: funktioniert noch nicht
-    //if($affRows = (mysqli_affected_rows($resClehar) > 0)) {
-    //    echo "<script>alert(\" Zeilen ".$affRows." gelöscht!\");</script>";
-    //}
-
+    $conn->query("INSERT INTO history(projectId, requirementsId, userId, operation, tablePlace, columnPlace)
+                    VALUES({$projectId}, {$reqId}, {$userId}, 'deleted', 'requirements', 'All'); ");
    
 ?>

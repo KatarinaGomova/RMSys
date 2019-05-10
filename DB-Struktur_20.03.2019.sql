@@ -102,13 +102,13 @@ INSERT INTO `requirements` VALUES (1,1,0,'GUI',NULL,'2019-02-18 08:42:04',1,25,2
                                     (6,3,0,'Farben',NULL,'2019-02-18 08:42:04',1,0,2,1,1,0),
                                     (7,1,2,'hier',NULL,'2019-02-18 10:31:31',1,50,2,1,1,0),
                                     (8,1,2,'Hier ist eine Anforderung die genau richtig angezeigt werden muss.',NULL,'2019-02-25 07:13:16',4,25,3,1,2,0),
-                                    (9,2,2,'Noch eine Anforderung, diese muss auch richtig angezeigt werden. Dies ist ganz ganz ganz ganz ganz ganz ganz ganz ganz ganz ganz ganz ganz wichtig!!!',NULL,'2019-02-25 07:42:31',1,25,3,1,2,0),
+                                    (9,2,2,'Noch eine Anforderung, diese muss auch richtig angezeigt werden. Dies ist ganz ganz ganz ganz ganz ganz ganz ganz ganz ganz ganz ganz ganz wichtig!!!',NULL,'2019-02-25 07:42:31',1,25,3,1,2,1),
                                     (10,1,1,'Eine zweite Anforderung.',NULL,'2019-03-05 08:20:52',1,50,2,1,2,0),
-                                    (11,3,1,'Hier ist die Dritte.',NULL,'2019-03-05 08:20:52',4,75,2,1,2,0),
+                                    (11,3,1,'Hier ist die Dritte.',NULL,'2019-03-05 08:20:52',4,75,2,1,2,1),
                                     (12,2,1,'Eine tolle Anforderung',NULL,'2019-03-05 12:15:36',3,100,2,1,2,0),
                                     (13,1,4,'Für Benutzerverwaltung gibt es auch eine Anforderung.',NULL,'2019-03-11 07:29:26',4,100,3,1,2,0),
                                     (14,1,4,'Unterteilung',NULL,'2019-03-11 11:05:04',1,50,3,1,1,0),
-                                    (15,4,1,'Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung.',NULL,'2019-03-11 11:08:06',3,25,2,1,2,0),
+                                    (15,4,1,'Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung Anforderung.',NULL,'2019-03-11 11:08:06',3,25,2,1,2,1),
                                     (16,1,6,'Komponenten',NULL,'2019-03-12 09:01:06',1,0,2,1,1,0),
                                     (17,4,0,'Namen',NULL,'2019-03-12 09:05:47',4,75,3,1,1,0),
                                     (18,1,0,'Test für Headline',NULL,'2019-03-14 07:52:48',3,0,2,6,1,0);
@@ -119,19 +119,28 @@ CREATE TABLE `history` (
   `requirementsId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `operation` enum('update', 'insert', 'deleted', 'restored'),
-  `table` varchar(30) NOT NULL,
-  `column` varchar(30) NOT NULL,
+  `tablePlace` varchar(30) NOT NULL,
+  `columnPlace` varchar(30) NOT NULL,
   `newValue` text,
-  `oldValue` int(11),
+  `oldValue` text,
   `operationDateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  
-  
   PRIMARY KEY (`historyId`),
+  KEY `history_ibfk_1` (`userId`),
+  KEY `history_ibfk_2` (`requirementsId`),
+  KEY `history_ibfk_3` (`projectId`),
   CONSTRAINT `history_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `usermanagement` (`userId`),
-  CONSTRAINT history_ibfk_2 FOREIGN KEY (`requirementsId`) REFERENCES `requirements` (`requirementsId`),
+  CONSTRAINT `history_ibfk_2` FOREIGN KEY (`requirementsId`) REFERENCES `requirements` (`requirementsId`),
   CONSTRAINT `history_ibfk_3` FOREIGN KEY (`projectId`) REFERENCES `project` (`projectId`)
 );
 
+INSERT INTO `history` VALUES (1,1,11,2,'insert','requirements','All',NULL,NULL,'2019-04-17 11:17:42'),
+							(2,1,10,2,'insert','requirements','All',NULL,NULL,'2019-04-17 11:17:42'),
+                            (3,1,11,2,'restored','requirements','All',NULL,NULL,'2019-03-08 09:50:42'),
+                            (4,1,11,2,'update','requirements','Status','unklar','OK','2019-03-05 11:17:42'),
+                            (5,1,11,2,'update','requirements','Description','Test neu','Test alt','2019-04-13 11:17:42'),
+                            (6,1,11,2,'deleted','requirements','All',NULL,NULL,'2019-04-15 11:17:42'),
+                            (7,1,11,2,'update','requirements','Progress','75','50','2019-04-17 11:17:42'),
+                            (8,6,18,3,'insert','requirements', 'All',NULL,NULL,'2019-03-11 12:00:52');
 
 
 

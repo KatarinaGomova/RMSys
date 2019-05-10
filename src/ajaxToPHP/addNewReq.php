@@ -11,59 +11,65 @@
     $comment = $_POST['comment'];
     $projectId = $_POST['projectId'];
 
-    if (isset($id) && isset($desc)) {
+      
+    $parentReq = $conn->query("SELECT * FROM requirements 
+                                WHERE requirementsId = {$id};");
+
+    if ($parent = mysqli_fetch_object($parentReq)) {
         
-        $parentReq = $conn->query("SELECT * FROM requirements 
-                                    WHERE requirementsId = {$id};");
+        switch ($pos) {
+            case 'after':
+                
+                $conn->query("UPDATE requirements SET numericalOrder = numericalOrder + 1 
+                                WHERE requirementsTypId = 2 
+                                AND parentId = {$parent->parentId} 
+                                AND numericalOrder > {$parent->numericalOrder} 
+                                ORDER BY numericalOrder;");
 
-        if ($parent = mysqli_fetch_object($parentReq)) {
-            
-            switch ($pos) {
-                case 'after':
-                    
-                    $conn->query("UPDATE requirements SET numericalOrder = numericalOrder + 1 
-                                    WHERE requirementsTypId = 2 
-                                    AND parentId = {$parent->parentId} 
-                                    AND numericalOrder > {$parent->numericalOrder} 
-                                    ORDER BY numericalOrder;");
+                $conn->query("INSERT INTO requirements 
+                                (numericalOrder, parentId, description,
+                                comments, requirementsStatusId, progress, 
+                                userId, projectId, requirementsTypId, deleted)
+                                VALUES ({$parent->numericalOrder}+1, {$parent->parentId}, 
+                                        '{$desc}', '{$comment}', {$status}, {$progress},
+                                        {$_SESSION['userId']}, {$projectId}, 2, 0);");
 
-                    $conn->query("INSERT INTO requirements 
-                                    (numericalOrder, parentId, description,
-                                    comments, requirementsStatusId, progress, 
-                                    userId, projectId, requirementsTypId)
-                                    VALUES ({$parent->numericalOrder}+1, {$parent->parentId}, 
-                                            '{$desc}', '{$comment}', {$status}, {$progress},
-                                            {$_SESSION['userId']}, {$projectId}, 2);");
+                break;
+            case 'before':
 
-                    break;
-                case 'before':
+                $conn->query("UPDATE requirements SET numericalOrder = numericalOrder + 1 
+                                WHERE requirementsTypId = 2 
+                                AND parentId = {$parent->parentId} 
+                                AND numericalOrder > {$parent->numericalOrder}-1 
+                                ORDER BY numericalOrder;");
 
-                    $conn->query("UPDATE requirements SET numericalOrder = numericalOrder + 1 
-                                    WHERE requirementsTypId = 2 
-                                    AND parentId = {$parent->parentId} 
-                                    AND numericalOrder > {$parent->numericalOrder}-1 
-                                    ORDER BY numericalOrder;");
+                $conn->query("INSERT INTO requirements 
+                                (numericalOrder, parentId, description,
+                                comments, requirementsStatusId, progress, 
+                                userId, projectId, requirementsTypId, deleted)
+                                VALUES ({$parent->numericalOrder}, {$parent->parentId}, 
+                                        '{$desc}', '{$comment}', {$status}, {$progress},
+                                        {$_SESSION['userId']}, {$projectId}, 2, 0);");
 
-                    $conn->query("INSERT INTO requirements 
-                                    (numericalOrder, parentId, description,
-                                    comments, requirementsStatusId, progress, 
-                                    userId, projectId, requirementsTypId)
-                                    VALUES ({$parent->numericalOrder}, {$parent->parentId}, 
-                                            '{$desc}', '{$comment}', {$status}, {$progress},
-                                            {$_SESSION['userId']}, {$projectId}, 2);");
-
-                    break;
-                default:
-                    // no default needed because there can only be "after" xor "before" 
-                    break;
-            }
-
-
+                break;
+            default:
+                // no default needed because there can only be "after" xor "before" 
+                break;
         }
 
 
-    } else {
-        echo "<script>alert(\" Zeilen bitte einfügen!\")</script>";
+        // to access the id of the new requirement
+        $newReqId = $conn->query("SELECT requirementsId FROM requirements 
+                                WHERE projectId = {$projectId}
+                                AND creationDateTime = (SELECT MAX(creationDateTime) FROM requirements);");
+
+        if($newId = mysqli_fetch_array($newReqId)) {
+
+            $conn->query("INSERT INTO history(projectId, requirementsId, userId, operation, tablePlace, columnPlace) 
+            VALUES({$projectId},{$newId['requirementsId']},{$_SESSION['userId']},'insert','requirements','All');");
+        }
+       
+
     }
 
 

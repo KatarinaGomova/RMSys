@@ -138,13 +138,22 @@
                                     <label for='disabledTextarea'>Comment</label>
                                     <textarea disabled class='form-control' id='disabledTextarea' rows='2'>{$dbDaten['comments']}</textarea>
                                 </div>
-                                <div style='height=10px;'>
+                                <div>
                                     <label for=''>History</label>
-                                    <table class='table'>
+                                    <table id='scrolltable' class='table table-sm'>
                                     <thead>
+                                        <tr>
+                                            <th>ID</th>    
+                                            <th>Operation</th>
+                                            <th>What</th>
+                                            <th>New Value</th>
+                                            <th>Old Value</th>
+                                            <th>User</th>
+                                            <th>Date & Time</th>
+                                        </tr>
                                     </thead>
                                     <tbody>";
-                                showAllHistory();
+                                showPartHistory($dbDaten['requirementsId']);
 
                           echo "    </tbody>
                                     </table>
@@ -166,38 +175,37 @@
     }
 
     function buttonEditReq($dbData) {
-        global $conn;
+        global $conn, $projectId;
 
         echo "  <button type='button' 
                         class='btn btn-outline-dark small' 
                         data-toggle='modal' 
                         data-target='#editRequirement'
-                        onclick=''>
+                        onclick='setEditingReq({$dbData['requirementsId']},{$projectId});'>
                     <i class='fa fa-pencil'></i>
                 </button>";
     }
    
     function buttonNewReq($dbData) {
-        global $conn;
-        global $projectId;
+        global $conn, $projectId;
 
         echo "  <button type='button' 
                         class='btn btn-outline-dark small' 
                         data-toggle='modal' 
                         data-target='#newRequirement'
-                        onclick='setRequirement(\"".$dbData['requirementsId']."\",\"".$projectId."\");'>
+                        onclick='setRequirement({$dbData['requirementsId']},{$projectId});'>
                     <i class='fa fa-plus'></i>
                 </button>";
     }
 
     function buttonClearReq($dbData) {
-        global $conn;
+        global $conn, $projectId;
 
         echo "  <button type='submit' 
                         value='{$dbData['requirementsId']}' 
                         name='btnClearReq' 
                         class='btn btn-outline-dark small' 
-                        onclick='deletingReq({$dbData['requirementsId']},{$dbData['numericalOrder']},{$dbData['parentId']})';> 
+                        onclick='deletingReq({$dbData['requirementsId']},{$dbData['numericalOrder']},{$dbData['parentId']}, {$projectId}, {$_SESSION['userId']})';> 
                     <i class='fa fa-trash-o'></i>   
                 </button>
             ";
@@ -472,7 +480,7 @@
     function showAllHistory() {
         global $conn, $projectId;
 
-        $sql = $conn->query("SELECT p.prefix, h.requirementsId, h.operation, h.column, h.newValue, h.oldValue, u.firstName, u.lastName, h.operationDateTime
+        $sql = $conn->query("SELECT *
                             FROM history as h
                             LEFT JOIN project as p on (h.projectId = p.projectId)
                             LEFT JOIN usermanagement as u on (h.userId = u.userId)
@@ -483,7 +491,7 @@
         echo "<tr>
             <th>{$row['prefix']}{$row['requirementsId']}</th>
             <td>{$row['operation']}</td>
-            <td>{$row['column']}</td>
+            <td>{$row['columnPlace']}</td>
             <td>{$row['newValue']}</td>
             <td>{$row['oldValue']}</td>
             <td>{$row['firstName']} {$row['lastName']}</td>
@@ -491,6 +499,30 @@
         </tr>";
         }
 
+    }
+
+    function showPartHistory($id) {
+        global $conn, $projectId;
+
+        $sql = $conn->query("SELECT p.prefix, h.requirementsId, h.operation, h.columnPlace, h.newValue, h.oldValue, u.firstName, u.lastName, h.operationDateTime
+                            FROM history as h
+                            LEFT JOIN project as p on (h.projectId = p.projectId)
+                            LEFT JOIN usermanagement as u on (h.userId = u.userId)
+                            WHERE h.projectId = {$projectId}
+                            AND h.requirementsId = {$id}
+                            ORDER BY h.operationDateTime DESC;");
+
+        while ($row = mysqli_fetch_array($sql)) {
+        echo "<tr>
+            <th>{$row['prefix']}{$row['requirementsId']}</th>
+            <td>{$row['operation']}</td>
+            <td>{$row['columnPlace']}</td>
+            <td>{$row['newValue']}</td>
+            <td>{$row['oldValue']}</td>
+            <td>{$row['firstName']} {$row['lastName']}</td>
+            <td>{$row['operationDateTime']}</td>
+        </tr>";
+        }
     }
 
 

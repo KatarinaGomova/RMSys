@@ -95,6 +95,15 @@ table#mytableofrows thead {
     color: white;
 }
 
-#mytableofrows:hover {
-    color: white;
+
+
+#scrolltable tbody {
+    display: block;
+    overflow: auto;
+    height: 100px;
+    width: 100%;
+}
+
+#scrolltable thead tr {
+    display: block;
 }

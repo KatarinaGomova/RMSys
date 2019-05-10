@@ -29,7 +29,7 @@
 ?>
 
 <!doctype html>
-<html lang="en">
+<html lang="de">
 	<head>
 		<title>Title</title>
 		<meta charset="utf-8">
@@ -63,7 +63,8 @@
 
 		</div>
 
-
+		<script src="src/ajaxFunctions/addNewReq.js"></script>
+		<script src="src/ajaxFunctions/deleteReq.js"></script>
 		<script src="node_modules/jquery/dist/jquery.js"></script>
 		<script src="node_modules/popper.js/dist/popper.js"></script>
 		<script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
